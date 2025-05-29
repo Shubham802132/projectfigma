@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Landing Page</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    .nav-left a {
+      color: #333;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .nav-left a:hover {
+      color: #FF6B6B;
+    }
+    
+    .nav-left a:active {
+      color: #4ECDC4;
+    }
+
+    .nav-right a {
+      transition: transform 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
+    }
+
+    .nav-right a:hover {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+
+    .nav-right a:active {
+      transform: scale(0.95);
+      opacity: 1;
+    }
+
+    /* Twitter specific colors */
+    .nav-right a[href*="twitter"]:hover {
+      filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(176deg) brightness(118%) contrast(119%);
+    }
+
+    .nav-right a[href*="twitter"]:active {
+      filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(176deg) brightness(118%) contrast(119%) brightness(0.8);
+    }
+
+    /* Facebook specific colors */
+    .nav-right a[href*="facebook"]:hover {
+      filter: invert(31%) sepia(98%) saturate(1234%) hue-rotate(187deg) brightness(97%) contrast(101%);
+    }
+
+    .nav-right a[href*="facebook"]:active {
+      filter: invert(31%) sepia(98%) saturate(1234%) hue-rotate(187deg) brightness(97%) contrast(101%) brightness(0.8);
+    }
+
+    /* LinkedIn specific colors */
+    .nav-right a[href*="linkedin"]:hover {
+      filter: invert(31%) sepia(98%) saturate(1234%) hue-rotate(187deg) brightness(97%) contrast(101%);
+    }
+
+    .nav-right a[href*="linkedin"]:active {
+      filter: invert(31%) sepia(98%) saturate(1234%) hue-rotate(187deg) brightness(97%) contrast(101%) brightness(0.8);
+    }
+
+    .contact-social-icon {
+      transition: all 0.3s ease;
+    }
+
+    /* Try For Free button styles */
+    .btn {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+
+    .btn:hover::after {
+      width: 300px;
+      height: 300px;
+    }
+
+    /* Feature item link styles */
+    .feature-item {
+      position: relative;
+      overflow: hidden;
+      perspective: 1500px;
+      cursor: pointer;
+    }
+
+    .feature-item a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      padding: 35px;
+      border-radius: 20px;
+      background: white;
+      position: relative;
+      z-index: 1;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+    }
+
+    .feature-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #4ECDC4, #45B7AF, #3DA19A, #4ECDC4);
+      background-size: 300% 300%;
+      opacity: 0;
+      transition: all 0.6s ease;
+      z-index: 0;
+      border-radius: 20px;
+      transform: translateZ(-1px);
+      animation: gradient-shift 8s ease infinite;
+    }
+
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .feature-item:hover::before {
+      opacity: 0.1;
+      transform: translateZ(0);
+    }
+
+    .feature-item a:hover {
+      transform: translateY(-12px) scale(1.04) rotateX(8deg);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      background: #ffffff;
+    }
+
+    .feature-item a:hover h3 {
+      color: #4ECDC4;
+      transform: scale(1.1) translateY(-4px);
+      text-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .feature-item a:hover .feature-icon {
+      transform: scale(1.25) rotate(10deg);
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+    }
+
+    .feature-item .feature-icon {
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: center center;
+      will-change: transform;
+    }
+
+    .feature-item h3 {
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      margin: 25px 0;
+      position: relative;
+      will-change: transform;
+    }
+
+    .feature-item h3::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #4ECDC4, #45B7AF);
+      transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border-radius: 2px;
+    }
+
+    .feature-item:hover h3::after {
+      width: 100%;
+    }
+
+    .feature-item p {
+      transition: all 0.5s ease;
+      position: relative;
+      transform: translateY(0);
+      opacity: 0.8;
+    }
+
+    .feature-item a:hover p {
+      color: #333;
+      transform: translateY(-4px);
+      opacity: 1;
+    }
+
+    .feature-item a:active {
+      transform: translateY(-6px) scale(0.97);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Enhanced pulse animation */
+    @keyframes enhanced-pulse {
+      0% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.15) rotate(5deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    .feature-item:hover .feature-icon {
+      animation: enhanced-pulse 3s infinite;
+    }
+
+    /* Premium shine effect */
+    .feature-item::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transform: rotate(45deg);
+      transition: all 0.6s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .feature-item:hover::after {
+      opacity: 1;
+      animation: premium-shine 2s infinite;
+    }
+
+    @keyframes premium-shine {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      20% { transform: translateX(100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
+    }
+
+    /* Add hover state for the entire card */
+    .feature-item:hover {
+      transform: translateZ(30px);
+    }
+
+    /* Add floating animation */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .feature-item {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    /* Add glow effect */
+    .feature-item::before {
+      box-shadow: 0 0 20px rgba(78, 205, 196, 0);
+      transition: box-shadow 0.6s ease;
+    }
+
+    .feature-item:hover::before {
+      box-shadow: 0 0 30px rgba(78, 205, 196, 0.2);
+    }
+
+    /* YouTube Video Section Styles */
+    .youtube-video-section {
+      padding: 60px 20px;
+      text-align: center; /* Center inline/inline-block elements */
+    }
+
+    .youtube-video-section .video-container {
+      max-width: 800px; /* Adjust as needed */
+      margin: 0 auto; /* Center the block element */
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .youtube-video-section .video-container iframe {
+      display: block; /* Ensure iframe is treated as a block for centering */
+      width: 100%;
+      height: 450px; /* Adjust height as needed, maintain aspect ratio */
+    }
+  </style>
+</head>
+<body>
+  <!-- Hero Section -->
+  <header class="hero">
+    <nav class="main-nav">
+      <ul class="nav-left">
+        <li><a href="https://www.figma.com/community/website-templates?resource_type=mixed&editor_type=all&price=all&sort_by=all_time&creators=all" target="_blank">Home</a></li>
+        <li><a href="https://www.figma.com/community/file/1301122182214878037" target="_blank">Product</a></li>
+        <li><a href="https://www.figma.com/community/file/1353395380095864088" target="_blank">Pricing</a></li>
+        <li><a href="https://www.figma.com/about/" target="_blank">About</a></li>
+        <li><a href="https://www.figma.com/contact/" target="_blank">Contact</a></li>
+      </ul>
+      <ul class="nav-mid">
+      <div class="logo-center">
+        <img src="assets/figma Land .png" alt="Figma Land" class="logo-img" />
+      </div>
+      </ul>
+      <ul class="nav-right">
+         <a href="https://twitter.com" target="_blank"><img src="assets/twitter.png" alt="Twitter" class="contact-social-icon"/></a>
+        <a href="https://www.facebook.com/groups/figmauser/" target="_blank"><img src="assets/facebook.png" alt="Facebook" class="contact-social-icon"/></a>
+        <a href="https://www.linkedin.com" target="_blank"><img src="assets/linkedin.png" alt="LinkedIn" class="contact-social-icon"/></a>
+        </ul>
+
+    </nav>
+    <div class="hero-content">
+      <h1>The best products<br>start with Figma</h1>
+      <p>Most calendars are designed for teams. Slate is designed for freelancers</p>
+      <a href="https://www.freefigmatemplates.com/gallery/free-figma-landing-pages-library" target="_blank" class="btn">Try For Free</a>
+    </div>
+  </header>
+
+  <!-- Features Section -->
+  <section id="features" class="features">
+    <h2 class="features-title">Features</h2>
+    <p class="features-subtitle">
+      Most calendars are designed for teams.<br>
+      Slate is designed for freelancers
+    </p>
+    <div class="features-list">
+      <div class="feature-item">
+        <a href="https://www.figma.com/typography/variable-fonts/" target="_blank">
+          <img src="assets/Vector.png" class="feature-icon" alt="OpenType features">
+          <h3>OpenType features<br>Variable fonts</h3>
+          <p>Slate helps you see how many more days you need to work to reach your financial goal.</p>
+        </a>
+      </div>
+      <div class="feature-item">
+        <a href="https://www.figma.com/design-systems/" target="_blank">
+          <img src="assets/feature2.png" class="feature-icon" alt="Design with real data">
+          <h3>Design with real data</h3>
+          <p>Slate helps you see how many more days you need to work to reach your financial goal.</p>
+        </a>
+      </div>
+      <div class="feature-item">
+        <a href="https://www.figma.com/prototyping/" target="_blank">
+          <img src="assets/mdi_brush.png" class="feature-icon" alt="Fastest way to take action">
+          <h3>Fastest way to take action</h3>
+          <p>Slate helps you see how many more days you need to work to reach your financial goal.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- YouTube Video Section -->
+  <section class="youtube-video-section">
+    <div class="video-container">
+      <iframe
+        src="https://www.youtube.com/embed/Cx2dkpBxst8"
+        width="700"
+        height="400"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </section>
+
+  <!-- Organize Section -->
+  <section class="organize-section">
+    <div class="organize-left">
+      <h2>Fastest way to organize</h2>
+      <p>Most calendars are designed for teams.<br>Slate is designed for freelancers</p>
+      <a href="#" class="btn">Try For Free</a>
+    </div>
+    <div class="organize-right">
+      <img src="assets/Frame 18.png" alt="Laptop" class="organize-img" />
+    </div>
+  </section>
+
+  <!-- Prototyping/Newsletter Section -->
+  <section class="prototyping-section">
+    <div class="prototyping-left">
+      <img src="assets/newsletter.png" alt="Newsletter Illustration" class="prototyping-img" />
+    </div>
+    <div class="prototyping-right">
+      <p class="proto-label">At your fingertips</p>
+      <h2>Lightning fast<br>prototyping</h2>
+      <p class="proto-sub">Subscribe to our Newsletter<br><span>Available exclusively on Figmaland</span></p>
+      <form class="newsletter-form" id="newsletterForm" onsubmit="return handleSubscribe(event)">
+        <input type="email" placeholder="Your Email" required id="emailInput"/>
+        <button type="submit" class="btn" id="subscribeBtn">Subscribe</button>
+      </form>
+      <div id="subscribeMessage" style="display: none; color: #4CAF50; margin-top: 10px; font-weight: bold;">
+        Thank you for subscribing! 🎉
+      </div>
+    </div>
+  </section>
+
+  <!-- Partners Section -->
+  <section class="partners-section">
+    <h2 class="partners-title">Partners</h2>
+    <p class="partners-subtitle">Most calendars are designed for teams.<br>Slate is designed for freelancers</p>
+    <div class="partners-grid">
+      <div class="partner-card"><span class="client-label">Client Name</span><img src="assets/google.png" alt="Google"></div>
+      <div class="partner-card"><span class="client-label">Client Name</span><img src="assets/amazon.png" alt="Amazon"></div>
+      <div class="partner-card"><span class="client-label">Client Name</span><img src="assets/microsoft.png" alt="Microsoft"></div>
+      <div class="partner-card"><span class="client-label">Client Name</span><img src="assets/uber.png" alt="Uber"></div>
+      <div class="partner-card"><span class="client-label">Client Name</span><img src="assets/dropbox.png" alt="Dropbox"></div>
+      <div class="partner-card"><span class="client-label">Client Name</span><img src="assets/google.png" alt="Google"></div>
+      <div class="partner-card"><span class="client-label">Client Name</span><img src="assets/uber.png" alt="Uber"></div>
+      <div class="partner-card"><span class="client-label">Client Name</span><img src="assets/amazon.png" alt="Amazon"></div>
+    </div>
+    <div class="partners-btn-wrap">
+      <a href="#" class="btn">Try For Free</a>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials-section">
+    <h2 class="testimonials-title">Testimonials</h2>
+    <img src="assets/ibm.png" alt="IBM" class="testimonials-logo" />
+    <p class="testimonials-text">Most calendars are designed for teams. Slate is designed for freelancers who want a simple way to plan their schedule.</p>
+    <div class="testimonials-user">
+      <img src="assets/user1.jpg" alt="John Doe" class="testimonials-avatar" />
+      <div>
+        <div class="testimonials-user-name">John Doe</div>
+        <div class="testimonials-user-role">UI designer</div>
+      </div>
+    </div>
+    <div class="testimonials-dots">
+      <span class="dot"></span>
+      <span class="dot active"></span>
+      <span class="dot"></span>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section class="pricing-section">
+    <h2 class="pricing-title">Pricing</h2>
+    <p class="pricing-subtitle">Most calendars are designed for teams.<br>Slate is designed for freelancers</p>
+    <div class="pricing-cards">
+      <div class="pricing-card">
+        <div class="pricing-card-title">FREE</div>
+        <div class="pricing-card-desc">Organize across all apps by hand</div>
+        <div class="pricing-card-price"><span class="pricing-card-amount">0</span><span class="pricing-card-currency">$</span><span class="pricing-card-period">Per Month</span></div>
+        <ul class="pricing-card-features">
+          <li>Pricing Feature</li>
+          <li>Pricing Feature</li>
+          <li>Pricing Feature</li>
+          <li>Pricing Feature</li>
+          <li>Pricing Feature</li>
+        </ul>
+        <a href="#" class="btn pricing-btn">Order Now</a>
+      </div>
+      <div class="pricing-card pricing-card-featured">
+        <div class="pricing-card-title">STANDARD</div>
+        <div class="pricing-card-desc">Organize across all apps by hand</div>
+        <div class="pricing-card-price"><span class="pricing-card-amount">10</span><span class="pricing-card-currency">$</span><span class="pricing-card-period">Per Month</span></div>
+        <ul class="pricing-card-features">
+          <li>Pricing Feature</li>
+          <li>Pricing Feature</li>
+          <li>Pricing Feature</li>
+          <li>Pricing Feature</li>
+          <li>Pricing Feature</li>
+        </ul>
+        <a href="#" class="btn pricing-btn">Order Now</a>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-card-title">BUSINESS</div>
+        <div class="pricing-card-desc">Organize across all apps by hand</div>
+        <div class="pricing-card-price"><span class="pricing-card-amount">99</span><span class="pricing-card-currency">$</span><span class="pricing-card-period">Per Month</span></div>
+        <ul class="pricing-card-features">
+          <li>Pricing Feature</li>
+          <li>Pricing Feature</li>
+          <li>Pricing Feature</li>
+          <li>Pricing Feature</li>
+          <li>Pricing Feature</li>
+        </ul>
+        <a href="#" class="btn pricing-btn">Order Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-header">
+    <h2>Contact Us</h2>
+    <p>Most calendars are designed for teams.<br>Slate is designed for freelancers</p>
+  </section>
+  <section class="contact-section">
+    <div class="contact-form-card">
+      <h3>Contact Us</h3>
+      <form class="contact-form">
+        <input type="text" placeholder="Your Name" required/>
+        <input type="email" placeholder="Your Email" required/>
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn">Send</button>
+      </form>
+    </div>
+    <div class="contact-info-block">
+      <div class="contact-info-row">
+        <div class="contact-info-item">
+          <img src="assets/location.png" alt="Location" class="contact-icon"/>
+          <div>6386 Spring St undefined Anchorage,<br>Georgia 12473 United States</div>
+        </div>
+        <div class="contact-info-item">
+          <img src="assets/phone.png" alt="Phone" class="contact-icon"/>
+          <div>(843) 555-0130</div>
+        </div>
+        <div class="contact-info-item">
+          <img src="assets/mail.png" alt="Email" class="contact-icon"/>
+          <div>willie.jennings@example.com</div>
+        </div>
+      </div>
+      <div class="contact-map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.019019019019!2d-122.419415484681!3d37.7749297797597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085808c7e0a7b0b%3A0x7d0b0b0b0b0b0b0b!2sSan+Francisco%2C+CA!5e0!3m2!1sen!2sus!4v1514524647889" width="400" height="220" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+      <div class="contact-social">
+        <a href="#"><img src="assets/twitter.png" alt="Twitter" class="contact-social-icon"/></a>
+        <a href="#"><img src="assets/facebook.png" alt="Facebook" class="contact-social-icon"/></a>
+        <a href="#"><img src="assets/linkedin.png" alt="LinkedIn" class="contact-social-icon"/></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer class="footer-section">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-title">Pages</div>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#partners">Partners</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-title">Tomothy</div>
+        <ul>
+          <li>Eleanor Edwards</li>
+          <li>Ted Robertson</li>
+          <li>Annette Russell</li>
+          <li>Jennie Mckinney</li>
+          <li>Gloria Richards</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-title">Jane Black</div>
+        <ul>
+          <li>Philip Jones</li>
+          <li>Product</li>
+          <li>Colleen Russell</li>
+          <li>Marvin Hawkins</li>
+          <li>Bruce Simmmons</li>
+        </ul>
+      </div>
+      <div class="footer-col footer-contact">
+        <div class="footer-contact-item"><img src="assets/location.png" alt="Location" class="footer-icon"/>7480 Mistwood Hollo</div>
+        <div class="footer-contact-item"><img src="assets/phone.png" alt="Phone" class="footer-icon"/>(239) 555-0108</div>
+        <div class="footer-social">
+          <a href="#"><img src="assets/twitter.png" alt="Twitter" class="footer-social-icon"/></a>
+          <a href="#"><img src="assets/facebook.png" alt="Facebook" class="footer-social-icon"/></a>
+          <a href="#"><img src="assets/linkedin.png" alt="LinkedIn" class="footer-social-icon"/></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Existing subscribe function
+    function handleSubscribe(event) {
+      event.preventDefault();
+      const emailInput = document.getElementById('emailInput');
+      const subscribeBtn = document.getElementById('subscribeBtn');
+      const subscribeMessage = document.getElementById('subscribeMessage');
+      
+      // Disable the button and show loading state
+      subscribeBtn.disabled = true;
+      subscribeBtn.textContent = 'Subscribing...';
+      
+      // Simulate API call with setTimeout
+      setTimeout(() => {
+        // Show success message
+        subscribeMessage.style.display = 'block';
+        
+        // Reset form
+        emailInput.value = '';
+        
+        // Reset button after 2 seconds
+        setTimeout(() => {
+          subscribeBtn.disabled = false;
+          subscribeBtn.textContent = 'Subscribe';
+        }, 2000);
+      }, 1000);
+      
+      return false;
+    }
+  </script>
+</body>
+</html> 
